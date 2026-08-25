@@ -11,6 +11,11 @@
 
 ### 这是什么
 
+> **兼容性**：本插件通过 DSH 官方插件机制（bundle patch 层 + `webServer.tapIndex`）工作，
+> 适用于 **DSH web profile**（实测版本：harness v0.18.x / `@deepseek-ai/*` 0.1.1-rc.2）。
+> 已在本机 `dsh web` 完整验证：webserver 绑定 `0.0.0.0`、`/api` 信任篱笆放行局域网、
+> 页面注入 shim 均生效。
+
 `dsh-lan-access` 是一个 **dsh 插件（bundle 层）**，解决两个官方限制，实现手机端与电脑端一致的完整操控能力（发指令、审批权限弹窗、查看编译日志）：
 
 1. **绕过 host 绑定限制**：官方 `dsh web` 出于安全原因在 CLI 硬编码拒绝
@@ -57,17 +62,48 @@ dsh plugin --profile web add dsh-lan-access
 dsh web --no-open
 ```
 
-### 验证
+### 使用方法（Usage）
+
+**适用对象**：本插件是 **web profile 专用**插件，请务必安装到 `--profile web`。
+（它需要 web profile 里的 `webserver` 行，若装进无 web 层的通用 profile 会提示
+`entry "webserver" not found`，属预期警告，并非装错。）
+
+**前置条件**
+- 已安装 DSH 并可用 `dsh web`；
+- 已安装 [pnpm](https://pnpm.io/installation)（`dsh plugin` 依赖，`corepack enable` 即可）。
+
+**完整安装步骤**
 
 ```bash
-# 组合配置里 webserver.host 应为 0.0.0.0，且出现 lan-access 行
+# 1) 安装插件到 web profile（git 托管 / npm / 本地 link 三选一）
+dsh plugin --profile web add github:ZnFr60/dsh-lan-access#main   # GitHub
+# 或: dsh plugin --profile web add git+https://gitee.com/mnrf/dsh-lan-access.git  # Gitee
+# 或: dsh plugin --profile web add dsh-lan-access                                 # npm(发布后)
+# 或(本地开发): dsh plugin --profile web add link:/绝对/路径/dsh-lan-access
+
+# 2) 重启 web 使插件生效
+dsh web --no-open
+```
+
+**验证生效**
+
+```bash
+# ① 组合配置：webserver.host 应为 0.0.0.0，且出现 lan-access 行
 dsh --profile web --dump-config
 
-# 页面 HTML 里应出现 randomUUID shim
+# ② 页面 HTML 应含 randomUUID shim（说明安全上下文修复已注入）
 curl -s http://127.0.0.1:3080/ | grep -o "randomUUID"
 
-# 手机访问（局域网 IP 由你本机决定）
-# http://<你的局域网IP>:3080
+# ③ 手机访问（局域网 IP 换成你的）：
+#     http://<你的局域网IPv4>:3080
+#     应能完整操作：发指令、审批权限弹窗、查看编译日志，与电脑端一致
+```
+
+**卸载**
+
+```bash
+dsh plugin --profile web remove dsh-lan-access
+# 然后重启 dsh web 即恢复默认回环访问
 ```
 
 ### 手机访问地址
@@ -129,6 +165,11 @@ dsh-lan-access/
 
 ### What it does
 
+> **Compatibility**: works through the official DSH plugin mechanism (bundle patch
+> layer + `webServer.tapIndex`) for the **DSH web profile** (verified on harness
+> v0.18.x / `@deepseek-ai/*` 0.1.1-rc.2): webserver binds `0.0.0.0`, the `/api` trust
+> fence accepts LAN hosts, and the page ships the shim.
+
 `dsh-lan-access` is a **dsh bundle plugin** that unlocks two official limits so a
 phone browser on your trusted home network can fully operate the DSH Web GUI
 (send commands, approve permission prompts, read build logs) exactly like the desktop:
@@ -147,26 +188,40 @@ phone browser on your trusted home network can fully operate the DSH Web GUI
 
 ### Install
 
-From this repo (recommended, uses the official `dsh plugin` mechanism; needs pnpm):
+> **Target**: a **web-profile** plugin — install into `--profile web`. It needs the
+> `webserver` row that only the web profile (via `dsh-web-app`) provides; installing
+> into a generic profile prints `entry "webserver" not found`, which is expected.
+
+Requires [pnpm](https://pnpm.io/installation). From this repo (official `dsh plugin` mechanism):
 
 ```bash
 # GitHub-hosted (this repo)
 dsh plugin --profile web add github:ZnFr60/dsh-lan-access#main
 # Gitee-hosted (mirror)
 dsh plugin --profile web add git+https://gitee.com/mnrf/dsh-lan-access.git
-```
-
-Or local link:
-
-```bash
-git clone https://gitee.com/mnrf/dsh-lan-access.git
-dsh plugin --profile web add link:/abs/path/dsh-lan-access
+# npm (after publishing)
+# dsh plugin --profile web add dsh-lan-access
+# local link (dev)
+# dsh plugin --profile web add link:/abs/path/dsh-lan-access
 ```
 
 Restart the web server after installing:
 
 ```bash
 dsh web --no-open
+```
+
+### Usage / Verify
+
+```bash
+# 1) composition: webserver.host should be 0.0.0.0 and a lan-access row present
+dsh --profile web --dump-config
+
+# 2) index.html should contain the randomUUID shim
+curl -s http://127.0.0.1:3080/ | grep -o "randomUUID"
+
+# 3) open from your phone: http://<your-lan-ipv4>:3080
+#    full control: send commands, approve permission prompts, read build logs
 ```
 
 ### Phone URL
