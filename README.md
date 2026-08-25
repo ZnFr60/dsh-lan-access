@@ -30,10 +30,10 @@
 方式 A — 从 git 托管仓库安装（推荐，官方 `dsh plugin` 机制，需 pnpm）：
 
 ```bash
-# Gitee 托管（当前仓库）
+# GitHub 托管（本仓库）
+dsh plugin --profile web add github:ZnFr60/dsh-lan-access#main
+# Gitee 托管（镜像）
 dsh plugin --profile web add git+https://gitee.com/mnrf/dsh-lan-access.git
-# GitHub 托管（发布后）
-dsh plugin --profile web add github:<你的用户名>/dsh-lan-access#main
 ```
 
 方式 B — 本地 link 安装（开发/内网）：
@@ -150,10 +150,10 @@ phone browser on your trusted home network can fully operate the DSH Web GUI
 From this repo (recommended, uses the official `dsh plugin` mechanism; needs pnpm):
 
 ```bash
-# Gitee-hosted (this repo)
+# GitHub-hosted (this repo)
+dsh plugin --profile web add github:ZnFr60/dsh-lan-access#main
+# Gitee-hosted (mirror)
 dsh plugin --profile web add git+https://gitee.com/mnrf/dsh-lan-access.git
-# GitHub-hosted (after publishing)
-dsh plugin --profile web add github:<your-username>/dsh-lan-access#main
 ```
 
 Or local link:
