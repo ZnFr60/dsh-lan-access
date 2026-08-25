@@ -1,5 +1,7 @@
 # dsh-lan-access
 
+> This is my first personal project, developed in my spare time during the summer vacation of 2026. I'm a high school student from China working on programming in my free time. Thank you for your support! Feel free to reach out to me if you have any suggestions, feedback or questions.
+
 > DeepSeek Harness (dsh) 局域网访问插件 — 让手机浏览器在**家庭可信内网**完整操控 DSH Web GUI
 > LAN-access plugin for DeepSeek Harness — full control of the DSH Web GUI from a phone browser on your **trusted home network**.
 
