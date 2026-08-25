@@ -27,16 +27,19 @@
 
 ### 安装
 
-方式 A — 从本仓库（git 托管）安装（推荐，官方 `dsh plugin` 机制，需 pnpm）：
+方式 A — 从 git 托管仓库安装（推荐，官方 `dsh plugin` 机制，需 pnpm）：
 
 ```bash
+# Gitee 托管（当前仓库）
+dsh plugin --profile web add git+https://gitee.com/mnrf/dsh-lan-access.git
+# GitHub 托管（发布后）
 dsh plugin --profile web add github:<你的用户名>/dsh-lan-access#main
 ```
 
 方式 B — 本地 link 安装（开发/内网）：
 
 ```bash
-git clone https://github.com/<你的用户名>/dsh-lan-access.git
+git clone https://gitee.com/mnrf/dsh-lan-access.git
 dsh plugin --profile web add link:/绝对/路径/dsh-lan-access
 ```
 
@@ -147,13 +150,16 @@ phone browser on your trusted home network can fully operate the DSH Web GUI
 From this repo (recommended, uses the official `dsh plugin` mechanism; needs pnpm):
 
 ```bash
+# Gitee-hosted (this repo)
+dsh plugin --profile web add git+https://gitee.com/mnrf/dsh-lan-access.git
+# GitHub-hosted (after publishing)
 dsh plugin --profile web add github:<your-username>/dsh-lan-access#main
 ```
 
 Or local link:
 
 ```bash
-git clone https://github.com/<your-username>/dsh-lan-access.git
+git clone https://gitee.com/mnrf/dsh-lan-access.git
 dsh plugin --profile web add link:/abs/path/dsh-lan-access
 ```
 
