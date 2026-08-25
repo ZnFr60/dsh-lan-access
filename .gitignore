@@ -3,6 +3,15 @@ node_modules/
 .pnpm-store/
 *.local
 
+# secrets — never commit
+.env
+.env.*
+*.secret
+.credentials.yaml
+.credentials.yml
+*_token.txt
+*_key.pem
+
 # logs
 *.log
 dsh-web-prod.log
