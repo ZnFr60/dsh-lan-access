@@ -1,0 +1,37 @@
+{
+  "name": "dsh-lan-access",
+  "version": "0.1.0",
+  "description": "DSH v0.18.x LAN access plugin: binds the web server to 0.0.0.0 (bypassing the official --host 0.0.0.0 CLI guard at the supported composition layer) and injects a browser shim that fixes the crypto.randomUUID() secure-context crash which breaks the client RPC layer on plain-HTTP non-loopback origins (phone browsers).",
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib/index.js",
+    "lib/index.d.ts",
+    "cordis.patch.yml"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT",
+  "keywords": [
+    "dsh",
+    "deepseek-harness",
+    "plugin",
+    "lan",
+    "local-network"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  }
+}

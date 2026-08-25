@@ -1,0 +1,32 @@
+# dsh-lan-access bundle patch — trusted-home-LAN access for the dsh web profile.
+#
+# Applied as a bundle layer after @deepseek-ai/dsh-web-app. Two jobs:
+#
+#   1. Bind the web server to all interfaces. The official CLI rejects
+#      `--host 0.0.0.0` for safety (remote code execution exposure), so we
+#      override the `webserver` row config at the composition layer — the
+#      supported, version-stable extension point. The port keeps honouring
+#      `dsh web --port <n>` via the webStartup service.
+#
+#   2. Mount the `lan-access` runtime row, whose plugin injects a browser
+#      shim for `crypto.randomUUID()` into every served index.html. That API
+#      is undefined on insecure origins (`http://<lan-ip>:<port>`), and the
+#      DSH client's `mintRpcId()` calls it directly, which crashes the whole
+#      RPC layer on phone browsers. The shim polyfills it from
+#      `crypto.getRandomValues()` (available on insecure origins).
+#
+# Safety notes:
+#   * LAN/trusted hosts are auto-derived: with the bind at 0.0.0.0 the
+#     web-runtime row computes the machine's IPv4 literals and feeds them to
+#     the /api browser-trust fence, so phone browsers are accepted.
+#   * Nothing here opens the Internet: no port forwarding, no tunnel, no
+#     public bind. Keep this to your trusted home network only.
+
+- id: webserver
+  config:
+    host: '0.0.0.0'
+    port: !!js ctx.webStartup.port ?? 3080
+
+- insert:
+    - id: lan-access
+      name: 'dsh-lan-access'

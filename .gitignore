@@ -1,0 +1,18 @@
+# dependencies
+node_modules/
+.pnpm-store/
+*.local
+
+# logs
+*.log
+dsh-web-prod.log
+
+# editor / OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# npm
+*.tgz
+package-lock.json
