@@ -32,7 +32,17 @@
 
 ### 安装
 
-方式 A — 从 git 托管仓库安装（推荐，官方 `dsh plugin` 机制，需 pnpm）：
+**方式 0 — 一键脚本（推荐）**：下载 `install.ps1` 直接运行（自动检查/补装 pnpm、安装插件、重启 dsh web、验证，可选加防火墙）：
+
+```powershell
+# 下载并运行（Windows）
+Invoke-WebRequest -UseBasicParsing "https://raw.githubusercontent.com/ZnFr60/dsh-lan-access/main/install.ps1" -OutFile install.ps1
+.\install.ps1                        # 默认 GitHub 源
+.\install.ps1 -Source gitee          # 换 Gitee 源
+.\install.ps1 -AddFirewallRule       # 同时添加局域网防火墙规则(需管理员)
+```
+
+**方式 A — 从 git 托管仓库安装（官方 `dsh plugin` 机制，需 pnpm）：**
 
 ```bash
 # GitHub 托管（本仓库）
@@ -146,6 +156,7 @@ dsh-lan-access/
 ├── lib/
 │   ├── index.js          # 插件主体：注入 randomUUID shim、打印 LAN URL
 │   └── index.d.ts        # 类型声明
+├── install.ps1           # 一键安装脚本（自动补 pnpm + 安装 + 重启 + 验证）
 ├── LICENSE               # MIT
 └── README.md
 ```
@@ -187,6 +198,16 @@ phone browser on your trusted home network can fully operate the DSH Web GUI
    `--trusted-host` is needed.
 
 ### Install
+
+**Option 0 — one-click script (recommended)**. Download `install.ps1` and run it
+(checks/installs pnpm, installs the plugin, restarts dsh web, verifies; optional firewall):
+
+```powershell
+Invoke-WebRequest -UseBasicParsing "https://raw.githubusercontent.com/ZnFr60/dsh-lan-access/main/install.ps1" -OutFile install.ps1
+.\install.ps1                        # default: GitHub source
+.\install.ps1 -Source gitee          # or Gitee source
+.\install.ps1 -AddFirewallRule       # also add a LAN-only firewall rule (admin)
+```
 
 > **Target**: a **web-profile** plugin — install into `--profile web`. It needs the
 > `webserver` row that only the web profile (via `dsh-web-app`) provides; installing
